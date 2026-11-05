@@ -1,0 +1,57 @@
+heads: 14q / 2kv, head_dim 64, group 7, theta 1000000.0
+dequant check seq=  5:  K OK   V OK
+dequant check seq= 64:  K OK   V OK
+dequant check seq=101:  K OK   V OK
+fused scores check seq=  5:  OK   max diff 0.00e+00
+fused scores check seq= 64:  OK   max diff 5.96e-07
+fused scores check seq=101:  OK   max diff 4.77e-07
+
+--- generation oracle ---
+P = 117. Prefill seals 3 groups. Residual after prefill: 21 tokens. First decode seal after 11 decode steps. Generating 23 new tokens.
+layer 0 after triton run: sealed K 128, residual 11, V 139
+raw fp32 vs HF:               MATCH
+raw fp32 vs nocache:          MATCH
+fp32 bypass vs HF:            MATCH
+fp32 bypass vs nocache:       MATCH
+int4 triton vs int4 pytorch:  MATCH
+int4 fused vs int4 pytorch:   MATCH  (23/23 tokens agree; tiny rounding differences can flip a near-tie)
+int4 vs HF (info only, not expected to match): 8/23 tokens agree
+
+--- generated tokens ---
+hf            ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+nocache       ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+raw fp32      ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+fp32 bypass   ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+int4 pytorch  ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 6529, 14324, 323, 92495, 304, 264, 3175, 1494, 11, 892, 374, 279, 1156, 10272, 2022]
+int4 triton   ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 6529, 14324, 323, 92495, 304, 264, 3175, 1494, 11, 892, 374, 279, 1156, 10272, 2022]
+int4 fused    ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 6529, 14324, 323, 92495, 304, 264, 3175, 1494, 11, 892, 374, 279, 1156, 10272, 2022]
+
+--- generated text ---
+hf            text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+nocache       text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+raw fp32      text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+fp32 bypass   text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+int4 pytorch  text: ' We present a novel method for quantizing attention weights and activations in a single pass, which is the first quantization'
+int4 triton   text: ' We present a novel method for quantizing attention weights and activations in a single pass, which is the first quantization'
+int4 fused    text: ' We present a novel method for quantizing attention weights and activations in a single pass, which is the first quantization'
+
+--- first differing position (None = identical) ---
+raw fp32 vs hf              : None
+raw fp32 vs nocache         : None
+fp32 bypass vs hf           : None
+fp32 bypass vs nocache      : None
+int4 triton vs int4 pytorch : None
+int4 fused vs int4 pytorch  : None
+int4 triton vs hf           : 8   (6529 vs 279, decode step 8)
+
+--- dequant only (one layer, 536 tokens) ---
+batch=  1  pytorch:   0.093 ms   triton:   0.026 ms   speedup:  3.55×
+batch=  4  pytorch:   0.093 ms   triton:   0.026 ms   speedup:  3.59×
+batch= 16  pytorch:   0.092 ms   triton:   0.026 ms   speedup:  3.52×
+batch= 64  pytorch:   0.532 ms   triton:   0.149 ms   speedup:  3.58×
+
+--- full decode (tok/s) ---
+batch=  1  fp32 raw:     80.0   int4 pytorch:     59.3 (0.74×)   int4 triton:     63.0 (0.79×)   int4 fused:     61.7 (0.77×)
+batch=  4  fp32 raw:    301.1   int4 pytorch:    223.2 (0.74×)   int4 triton:    240.2 (0.80×)   int4 fused:    237.0 (0.79×)
+batch= 16  fp32 raw:    778.6   int4 pytorch:    637.4 (0.82×)   int4 triton:    689.6 (0.89×)   int4 fused:    747.4 (0.96×)
+batch= 64  fp32 raw:   1238.4   int4 pytorch:   1008.2 (0.81×)   int4 triton:   1210.9 (0.98×)   int4 fused:   1725.6 (1.39×)

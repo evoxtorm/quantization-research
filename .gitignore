@@ -1,0 +1,25 @@
+# Python virtual environments
+.venv/
+env/
+venv/
+
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+
+# Tensor dumps / model weights (large binaries, regenerable)
+dumps/
+*.pt
+*.pth
+*.safetensors
+*.bin
+
+# Claude Code (local settings, per-user notes)
+.claude/
+CLAUDE.local.md
+
+# Editor / OS clutter
+.vscode/
+.idea/
+.ipynb_checkpoints/
+.DS_Store

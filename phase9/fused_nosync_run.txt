@@ -1,0 +1,136 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 3033.04it/s]
+/home/hitesh/Desktop/quantization/.venv/lib/python3.14/site-packages/torch/cuda/__init__.py:1333: UserWarning: Synchronization debug mode is a prototype feature and does not yet detect all synchronizing operations (Triggered internally at /__w/pytorch/pytorch/torch/csrc/cuda/Module.cpp:1028.)
+  torch._C._cuda_set_sync_debug_mode(debug_mode)
+USDT:2026-11-05 18:11:49 17737:17737 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-05 18:11:49 17737:17737 SyncActivityProfilerHandler.cpp:59] profiler_stop
+USDT:2026-11-05 18:11:58 17737:17737 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-05 18:11:59 17737:17737 SyncActivityProfilerHandler.cpp:59] profiler_stop
+heads: 14q / 2kv, head_dim 64, group 7, theta 1000000.0
+dequant check seq=  5:  K OK   V OK
+dequant check seq= 64:  K OK   V OK
+dequant check seq=101:  K OK   V OK
+fused scores check seq=  5:  OK   max diff 0.00e+00
+fused scores check seq= 64:  OK   max diff 5.96e-07
+fused scores check seq=101:  OK   max diff 4.77e-07
+fp32 fused scores check seq=  5:  OK   max diff 0.00e+00
+fp32 fused scores check seq= 64:  OK   max diff 4.77e-07
+fp32 fused scores check seq=101:  OK   max diff 4.77e-07
+sync check fp32 raw     : no sync
+sync check fp32 fused   : no sync
+sync check fp32 bypass  : no sync
+sync check int4 pytorch : no sync
+sync check int4 triton  : no sync
+sync check int4 fused   : no sync
+
+--- generation oracle ---
+P = 117. Prefill seals 3 groups. Residual after prefill: 21 tokens. First decode seal after 11 decode steps. Generating 23 new tokens.
+raw fp32 vs HF:               MATCH
+raw fp32 vs nocache:          MATCH
+fp32 fused vs HF:             MATCH  (summation order differs from PyTorch, so a near-tie could flip)
+fp32 bypass vs HF:            MATCH
+fp32 bypass vs nocache:       MATCH
+int4 triton vs int4 pytorch:  MATCH
+int4 fused vs int4 pytorch:   MATCH  (23/23 tokens agree; tiny rounding differences can flip a near-tie)
+int4 vs HF (info only, not expected to match): 8/23 tokens agree
+
+--- generated tokens ---
+hf            ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+nocache       ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+fp32 raw      ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+fp32 fused    ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+fp32 bypass   ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 279, 6529, 14324, 315, 264, 4128, 1614, 11, 892, 582, 1618, 1376, 19083, 6500, 10272]
+int4 pytorch  ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 6529, 14324, 323, 92495, 304, 264, 3175, 1494, 11, 892, 374, 279, 1156, 10272, 2022]
+int4 triton   ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 6529, 14324, 323, 92495, 304, 264, 3175, 1494, 11, 892, 374, 279, 1156, 10272, 2022]
+int4 fused    ids : [1205, 3042, 264, 11514, 1714, 369, 10272, 4849, 6529, 14324, 323, 92495, 304, 264, 3175, 1494, 11, 892, 374, 279, 1156, 10272, 2022]
+
+--- generated text ---
+hf            text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+nocache       text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+fp32 raw      text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+fp32 fused    text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+fp32 bypass   text: ' We present a novel method for quantizing the attention weights of a language model, which we call key-value cache quant'
+int4 pytorch  text: ' We present a novel method for quantizing attention weights and activations in a single pass, which is the first quantization'
+int4 triton   text: ' We present a novel method for quantizing attention weights and activations in a single pass, which is the first quantization'
+int4 fused    text: ' We present a novel method for quantizing attention weights and activations in a single pass, which is the first quantization'
+
+--- first differing position (None = identical) ---
+raw fp32 vs hf              : None
+raw fp32 vs nocache         : None
+fp32 fused vs hf            : None
+fp32 bypass vs hf           : None
+fp32 bypass vs nocache      : None
+int4 triton vs int4 pytorch : None
+int4 fused vs int4 pytorch  : None
+int4 triton vs hf           : 8   (6529 vs 279, decode step 8)
+
+--- dequant only (one layer, 536 tokens) ---
+batch=  1  pytorch:   0.093 ms   triton:   0.027 ms   speedup:  3.45×
+batch=  4  pytorch:   0.093 ms   triton:   0.027 ms   speedup:  3.46×
+batch= 16  pytorch:   0.093 ms   triton:   0.027 ms   speedup:  3.47×
+batch= 64  pytorch:   0.546 ms   triton:   0.147 ms   speedup:  3.72×
+
+--- full decode (tok/s) ---
+batch=  1  fp32 raw:     94.6   fp32 fused:     87.7 (0.93×)   int4 pytorch:     68.1 (0.72×)   int4 triton:     73.9 (0.78×)   int4 fused:     72.4 (0.77×)   int4 fused / fp32 fused: 0.82×
+batch=  4  fp32 raw:    392.6   fp32 fused:    355.6 (0.91×)   int4 pytorch:    271.7 (0.69×)   int4 triton:    294.5 (0.75×)   int4 fused:    278.1 (0.71×)   int4 fused / fp32 fused: 0.78×
+batch= 16  fp32 raw:    904.0   fp32 fused:   1066.2 (1.18×)   int4 pytorch:    801.7 (0.89×)   int4 triton:    883.9 (0.98×)   int4 fused:   1046.9 (1.16×)   int4 fused / fp32 fused: 0.98×
+batch= 64  fp32 raw:   1313.5   fp32 fused:   1861.7 (1.42×)   int4 pytorch:   1095.2 (0.83×)   int4 triton:   1336.6 (1.02×)   int4 fused:   1993.6 (1.52×)   int4 fused / fp32 fused: 1.07×
+batch=128  fp32 raw:   1346.8   fp32 fused:   1950.8 (1.45×)   int4 pytorch:   1096.5 (0.81×)   int4 triton:   1369.4 (1.02×)   int4 fused:   2075.1 (1.54×)   int4 fused / fp32 fused: 1.06×
+
+--- profile: fp32 fused, batch 128, 10 decode steps ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::copy_         0.56%       3.177ms        17.55%     100.350ms     104.531us     171.036ms        27.69%     221.402ms     230.627us           960  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     170.508ms        27.60%     170.508ms     355.225us           480  
+                                               aten::mm         2.48%      14.186ms         8.48%      48.519ms      28.710us     161.115ms        26.08%     167.144ms      98.902us          1690  
+                                              aten::bmm         1.62%       9.242ms         1.93%      11.048ms      23.018us     148.231ms        24.00%     148.231ms     308.814us           480  
+std::enable_if<true, void>::type internal::gemvx::ke...         0.00%       0.000us         0.00%       0.000us       0.000us     145.372ms        23.53%     145.372ms     605.717us           240  
+void magma_sgemmEx_kernel<float, float, float, true,...         0.00%       0.000us         0.00%       0.000us       0.000us     104.787ms        16.96%     104.787ms     213.851us           490  
+                                              aten::cat         1.06%       6.075ms         2.48%      14.199ms       9.860us      84.003ms        13.60%     106.169ms      73.729us          1440  
+                                    Command Buffer Full        65.87%     376.685ms        65.87%     376.685ms     212.576us      81.713ms        13.23%      81.713ms      46.113us          1772  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us      80.905ms        13.10%      80.905ms     168.553us           480  
+                                             fused_fp32         0.00%       0.000us         0.00%       0.000us       0.000us      32.682ms         5.29%      32.682ms     136.176us           240  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x128_...         0.00%       0.000us         0.00%       0.000us       0.000us      31.894ms         5.16%      31.894ms     132.893us           240  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x...         0.00%       0.000us         0.00%       0.000us       0.000us      21.489ms         3.48%      21.489ms      22.385us           960  
+                                         aten::_softmax         0.16%     937.841us         0.36%       2.056ms       8.566us       5.232ms         0.85%       6.675ms      27.813us           240  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us       5.232ms         0.85%       5.232ms      21.802us           240  
+                                              aten::mul         1.93%      11.013ms        20.17%     115.375ms      39.784us       4.732ms         0.77%       5.043ms       1.739us          2900  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       3.236ms         0.52%       3.236ms       1.484us          2180  
+                                              aten::add         1.55%       8.866ms        18.14%     103.730ms      47.802us       3.033ms         0.49%       3.406ms       1.570us          2170  
+std::enable_if<!(false), void>::type internal::gemvx...         0.00%       0.000us         0.00%       0.000us       0.000us       2.859ms         0.46%       2.859ms      11.911us           240  
+void cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us       2.831ms         0.46%       2.831ms       2.949us           960  
+                                           aten::argmax         0.02%      90.220us         0.02%     131.990us      13.199us       1.983ms         0.32%       1.983ms     198.261us            10  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 571.883ms
+Self CUDA time total: 617.755ms
+
+
+--- profile: int4 fused, batch 128, 10 decode steps ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::copy_         0.77%       3.992ms         1.52%       7.875ms       6.563us     170.943ms        29.27%     171.041ms     142.534us          1200  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     169.983ms        29.11%     169.983ms     354.130us           480  
+                                               aten::mm         2.70%      14.030ms        13.83%      71.903ms      42.546us     160.950ms        27.56%     162.098ms      95.916us          1690  
+                                              aten::bmm         1.83%       9.504ms         2.17%      11.263ms      23.464us     147.845ms        25.32%     147.845ms     308.010us           480  
+std::enable_if<true, void>::type internal::gemvx::ke...         0.00%       0.000us         0.00%       0.000us       0.000us     145.117ms        24.85%     145.117ms     604.654us           240  
+void magma_sgemmEx_kernel<float, float, float, true,...         0.00%       0.000us         0.00%       0.000us       0.000us     104.716ms        17.93%     104.716ms     213.706us           490  
+                              dequnatize_v_cache_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      46.879ms         8.03%      46.879ms     195.329us           240  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x128_...         0.00%       0.000us         0.00%       0.000us       0.000us      31.791ms         5.44%      31.791ms     132.464us           240  
+                                                  fused         0.00%       0.000us         0.00%       0.000us       0.000us      26.862ms         4.60%      26.862ms     111.927us           240  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x...         0.00%       0.000us         0.00%       0.000us       0.000us      21.491ms         3.68%      21.491ms      22.387us           960  
+                                              aten::cat         1.41%       7.320ms         7.38%      38.354ms      22.830us       7.563ms         1.30%       8.389ms       4.994us          1680  
+                                         aten::_softmax         0.20%       1.020ms         0.31%       1.601ms       6.670us       5.166ms         0.88%       5.166ms      21.524us           240  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us       5.166ms         0.88%       5.166ms      21.524us           240  
+                                              aten::mul         2.18%      11.339ms        20.76%     107.935ms      37.219us       4.664ms         0.80%       4.826ms       1.664us          2900  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       3.236ms         0.55%       3.236ms       1.485us          2180  
+                                              aten::add         1.91%       9.920ms         3.21%      16.683ms       6.922us       3.232ms         0.55%       3.374ms       1.400us          2410  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us       2.867ms         0.49%       2.867ms      11.947us           240  
+                                    Command Buffer Full        61.46%     319.465ms        61.46%     319.465ms     244.614us       2.855ms         0.49%       2.855ms       2.186us          1306  
+void cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us       2.826ms         0.48%       2.826ms       2.944us           960  
+std::enable_if<!(false), void>::type internal::gemvx...         0.00%       0.000us         0.00%       0.000us       0.000us       2.728ms         0.47%       2.728ms      11.366us           240  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 519.797ms
+Self CUDA time total: 584.002ms
+

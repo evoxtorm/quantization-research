@@ -1,0 +1,15 @@
+--- run 1
+batch=  1  fp32 raw:     77.2   int4 pytorch:     59.9 (0.78×)   int4 triton:     64.4 (0.83×)
+batch=  4  fp32 raw:    299.4   int4 pytorch:    227.1 (0.76×)   int4 triton:    243.0 (0.81×)
+batch= 16  fp32 raw:    733.0   int4 pytorch:    607.1 (0.83×)   int4 triton:    653.6 (0.89×)
+batch= 64  fp32 raw:   1213.9   int4 pytorch:    998.5 (0.82×)   int4 triton:   1191.1 (0.98×)
+--- run 2
+batch=  1  fp32 raw:     80.9   int4 pytorch:     58.4 (0.72×)   int4 triton:     64.5 (0.80×)
+batch=  4  fp32 raw:    304.4   int4 pytorch:    226.9 (0.75×)   int4 triton:    238.9 (0.79×)
+batch= 16  fp32 raw:    733.7   int4 pytorch:    595.0 (0.81×)   int4 triton:    648.1 (0.88×)
+batch= 64  fp32 raw:   1210.8   int4 pytorch:    992.4 (0.82×)   int4 triton:   1190.5 (0.98×)
+--- run 3
+batch=  1  fp32 raw:     80.7   int4 pytorch:     60.4 (0.75×)   int4 triton:     64.5 (0.80×)
+batch=  4  fp32 raw:    305.3   int4 pytorch:    228.5 (0.75×)   int4 triton:    244.0 (0.80×)
+batch= 16  fp32 raw:    734.9   int4 pytorch:    604.6 (0.82×)   int4 triton:    652.9 (0.89×)
+batch= 64  fp32 raw:   1209.1   int4 pytorch:    997.8 (0.83×)   int4 triton:   1193.0 (0.99×)
